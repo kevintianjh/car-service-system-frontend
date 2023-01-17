@@ -9,7 +9,9 @@ import { AuthenticationService } from './authentication.service';
 })
 export class StompService { 
 
-  private baseHref = "http://localhost:8080/websocket";
+
+  
+  private baseHref = "http://localhost:8080/websocket";  
   private socket!:any;
   private stompClient!:any; 
 
