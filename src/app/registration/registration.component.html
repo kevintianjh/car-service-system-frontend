@@ -1,0 +1,107 @@
+<form autocomplete="off">  
+    <div id="main"> 
+        <table style="margin: auto; margin-top: 5rem;">
+            <tr> 
+                <td colspan="2">
+                    <span class="mat-headline-4">Register for an account</span>  
+                </td> 
+            </tr>
+            <tr> 
+                <td colspan="2">
+                    <a routerLink="/login">Back</a> to login
+                </td> 
+            </tr> 
+            <tr> 
+                <td>Username: </td>
+                <td style="width: 65%;">
+                    <div style="width: 100%; float: left;">  
+                        <input style="float:left;" required type="text" maxlength="20" name="username"size="30"
+                         (blur)="this.validateUsername(true)" 
+                         [(ngModel)]="username"
+                         [disabled]="checking_un_avail || registering_cust"
+                         [class]="username_error==''?'':'is-invalid'">  
+                          
+                        <mat-spinner style="margin-top: 3px; margin-left: 0.5rem; width: 1rem; height: 1rem; float:left" 
+                         [style.display]="this.checking_un_avail?'block':'none'"> 
+                        </mat-spinner> 
+                     </div>  
+                     <br>
+                    <small style="color: red; vertical-align: middle;" 
+                     [style.display]="username_error==''?'none':'inline'">
+                        {{username_error}}
+                    </small>
+                </td> 
+            </tr> 
+            <tr>
+                <td>Password: </td>
+                <td>
+                    <input required type="password" maxlength="20" name="password" size="30"
+                     [(ngModel)]="password"
+                     (blur)="this.validatePw();" 
+                     [disabled]="registering_cust" 
+                     [class.is-invalid]="this.password_error!=''">
+                    
+                    <small style="color: red;" 
+                     [style.display]="password_error==''?'none':'inline'">
+                        <br>{{password_error}}
+                    </small>
+                </td>
+            </tr>
+            <tr>
+                <td>Confirm Password: </td>
+                <td>
+                    <input required type="password" maxlength="20" name="cfm_password" size="30"
+                     [class.is-invalid]="this.cfm_password_error!=''"
+                     (blur)="this.validateCfmPw()"
+                     [(ngModel)]="cfm_password" 
+                     [disabled]="registering_cust" >
+
+                    <small style="color: red;" [style.display]="cfm_password_error==''?'none':'inline'"><br>{{cfm_password_error}}</small>
+                
+                </td>
+            </tr>
+            <tr>
+                <td>Name: </td>
+                <td>
+                    <input required type="text" maxlength="30" name="cust_name" size="30"
+                     [class.is-invalid]="this.cust_name_error!=''"
+                     (blur)="this.validateCustName()"
+                     [disabled]="registering_cust"
+                     [(ngModel)]="cust_name">
+                    <small style="color: red;" [style.display]="cust_name_error==''?'none':'inline'"><br>{{cust_name_error}}</small>
+                </td>
+            </tr>
+            <tr>
+                <td>Email: </td>
+                <td>
+                    <input required type="text" maxlength="30" name="email"  size="30"
+                     [disabled]="registering_cust"
+                     (blur)="this.validateEmail()"
+                     [class.is-invalid]="this.email_error!=''"
+                     [(ngModel)]="email">
+
+                    <small style="color: red;" [style.display]="this.email_error==''?'none':'inline'"><br>{{this.email_error}}</small>
+                
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button mat-raised-button color="primary" type="submit"
+                     (click)="register()"
+                     [disabled]="checking_un_avail || registering_cust"
+                     [style.display]="registering_cust?'none':'inline'">
+                        <mat-icon>account_box</mat-icon>Register
+                    </button>
+                    <mat-spinner style="width: 1rem; height: 1rem;" [style.display]="registering_cust?'block':'none'"></mat-spinner>
+                </td>
+            </tr>
+            <tr *ngIf="error!=''">
+                <td></td>
+                <td style="background-color: lightcoral;">
+                    {{error}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

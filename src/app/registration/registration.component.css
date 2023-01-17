@@ -1,0 +1,24 @@
+table, th, td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    padding: 0.5rem;
+    margin: 3rem;
+    width: 30rem;
+}
+
+#main {
+    margin: auto;
+}
+
+th, td {
+    background-color: #99ddff;
+}
+
+button {
+    margin-right: 1rem;
+}
+
+.is-invalid {
+    background-color: lightcoral;
+    border-color: white;
+}

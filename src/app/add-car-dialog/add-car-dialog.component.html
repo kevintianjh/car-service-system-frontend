@@ -1,0 +1,43 @@
+<table> 
+    <tr>
+        <td></td>
+        <td><h2>Add New Vehicle</h2></td>
+    </tr>
+    <tr>
+        <td>Registration</td>
+        <td><input name="regisBox" type="text" maxlength="20" [disabled]="disabledControls" style="width: 10rem;" [(ngModel)]="regisBox"></td>
+    </tr>
+    <tr>
+        <td>Model</td>
+        <td><input type="text" name="modelBox" maxlength="20" [disabled]="disabledControls" style="width: 10rem;" [(ngModel)]="modelBox"></td>
+    </tr>
+    <tr> 
+        <td>Type</td>
+        <td>
+            <select name="typeDdl" [disabled]="disabledControls" style="width: 10.5rem;"  [(ngModel)]="typeValue">
+                <option value="Car">Car</option>
+                <option value="Truck">Truck</option>
+                <option value="Bus">Bus</option>
+                <option value="Motorcycle">Motorcycle</option>
+            </select>
+        </td>
+    </tr> 
+    <tr>  
+        <td></td>
+        <td style="width:70%;">   
+            <button mat-raised-button color="primary" [style.display]="disabledControls?'none':'inline'" (click)="add()"><mat-icon>add</mat-icon>Add</button> 
+            <button mat-raised-button color="primary" [style.display]="disabledControls?'none':'inline'" (click)="cancel()"><mat-icon>cancel</mat-icon>Cancel</button> 
+            <mat-spinner style="width: 1rem; height: 1rem;" [style.display]="disabledControls?'block':'none'"></mat-spinner>
+        </td> 
+    </tr>
+    <tr *ngIf="errors.length != 0">
+        <td></td>
+        <td style="background-color: lightcoral;">
+            <ul>
+                <li *ngFor="let error of errors"> 
+                    {{error}}
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table> 

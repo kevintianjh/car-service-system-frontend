@@ -1,0 +1,130 @@
+<mat-toolbar color="primary" class="navbar">
+  <div style="padding-left: 1rem; display: flex; padding-bottom: 0px; margin-bottom: 0px;">
+      <span><h1>WOW Car Service</h1></span>
+      <span><button mat-raised-button color="primary" disabled><mat-icon>build</mat-icon>Manage Service Requests</button></span> 
+      <span><button mat-raised-button color="primary" (click)="this.router.navigate(['/admin/customers'])"><mat-icon>people</mat-icon>Manage Customers</button></span>
+      <span><button mat-raised-button color="primary" (click)="this.router.navigate(['/admin/chat'])"><mat-icon>help</mat-icon>Help</button></span>
+      <span><button mat-raised-button color="primary" (click)="this.router.navigate(['/login', {logout: '1'}])"><mat-icon>exit_to_app</mat-icon>Log Out</button></span>
+  </div>
+</mat-toolbar>  
+ 
+<div style="margin-top: 2rem; margin-left: 2rem; margin-right: 2rem;"> 
+    <table style="width: 95%;">
+      <tr class="header">
+        <td>ID</td>
+        <td>
+          <div style="margin:auto;">
+            <input maxlength="20" type="text" placeholder="Username" size="15"
+             [(ngModel)]="this.usernameFilter"
+             (change)="changePage()">
+          </div> 
+        </td>
+        <td>Type</td>
+        <td>Model</td>
+        <td>Registration</td>
+        <td>Service Request</td>
+        <td style="width: 15%;">
+          <select style="width: 100%; height: 100%;"
+           [(ngModel)]="svcStsFilter"
+           (change)="changePage()"
+           [disabled]="this.pageLoading"> 
+
+            <option value="0">Service Status</option> 
+            <option value="2">Received</option>
+            <option value="3">Ongoing</option>
+            <option value="4">Completed</option>
+          </select>
+        </td>
+        <td style="background-color: #99ddff;">
+            <button mat-raised-button color="primary" style="width: 100%;"
+             [disabled]="isUpdateInProgress() || this.pageLoading"
+             (click)="batchUpdateStatus()"> 
+                <mat-icon>arrow_downward</mat-icon>Update All
+            </button>
+        </td>
+      </tr>
+
+      <tr *ngIf="this.pageLoading">
+        <td colspan="8">
+          <mat-spinner style="margin: auto; width: 25%; margin-top: 2rem; margin-bottom: 2rem;"></mat-spinner>
+        </td>
+      </tr> 
+
+      <ng-template [ngIf]="this.pageLoading==false">
+
+        <tr *ngIf="this.carList.length==0">
+          <td colspan="8" style="padding: 2rem; text-align: center;">
+            <h1>No records found</h1>
+          </td> 
+        </tr> 
+
+        <tr *ngFor="let car of this.carList;index as i">
+          <td>{{car.id}}</td>
+          <td>{{car.customer.username}}</td>  
+          <td>{{car.type}}</td>
+          <td>{{car.model}}</td>
+          <td>{{car.registration}}</td>
+          <td>{{car.serviceRequest}}</td>
+          <td>
+            <mat-spinner style="margin: auto; width: 25%;"
+             [style.display]="this.updateInProgressFlags[i]?'':'none'"
+            ></mat-spinner>
+
+            <span
+             [style.display]="this.updateInProgressFlags[i]?'none':''">
+
+              <input type="radio" value="2" 
+              name="ss_input_{{i}}" 
+              id="ss_input_{{i}}_2" 
+              [checked]="this.carList[i].serviceStatus=='2'" 
+              (change)="svcStsRadioUpdate(i, '2')"> 
+                  <label 
+                  for="ss_input_{{i}}_2">Received</label>
+              <br>
+              <input type="radio" value="3"
+              name="ss_input_{{i}}" 
+              id="ss_input_{{i}}_3" 
+              [checked]="this.carList[i].serviceStatus=='3'"
+              (change)="svcStsRadioUpdate(i, '3')"> 
+                  <label 
+                    for="ss_input_{{i}}_3">Ongoing</label>
+              <br>
+              <input type="radio" value="4"
+              name="ss_input_{{i}}" 
+              id="ss_input_{{i}}_4" 
+              [checked]="this.carList[i].serviceStatus=='4'"
+              (change)="svcStsRadioUpdate(i, '4')"> 
+                  <label 
+                    for="ss_input_{{i}}_4">Completed</label>
+            </span>
+          </td> 
+          <td>
+            <button mat-raised-button style="width: 100%;" color="primary" 
+             [disabled]="(!this.changeFlags[i]) || isUpdateInProgress()"
+             (click)="updateStatus(i)">Update</button>
+          </td>
+        </tr>
+      </ng-template>
+      <tr [style.display]="(!isUpdateInProgress() && !this.pageLoading && this.totalPages.length>=1)?'':'none'">
+
+        <td colspan="8" style="padding: 1rem; text-align: center;"> 
+          <div class="pagination">
+            <a 
+             *ngIf="this.currentPage>1"
+             (click)="changePage(this.currentPage-1)">&laquo;</a> 
+
+            <a *ngFor="let p of this.totalPages" 
+               [class.active]="p==this.currentPage"
+               (click)="(p != this.currentPage)?changePage(p):null">   
+              {{p}}
+            </a>  
+
+            <a 
+             *ngIf="this.currentPage<this.totalPages.length"
+             (click)="changePage(this.currentPage+1)">&raquo;</a>
+          </div>
+        </td>
+      </tr>
+
+    </table>   
+</div>

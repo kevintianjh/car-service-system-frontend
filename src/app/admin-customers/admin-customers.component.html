@@ -1,0 +1,146 @@
+<mat-toolbar color="primary" class="navbar">
+    <div style="padding-left: 1rem; display: flex; padding-bottom: 0px; margin-bottom: 0px;">
+        <span><h1>WOW Car Service</h1></span>
+        <span><button mat-raised-button color="primary" (click)="this.router.navigate(['/admin/dashboard'])"><mat-icon>build</mat-icon>Manage Service Requests</button></span> 
+        <span><button mat-raised-button color="primary" disabled><mat-icon>people</mat-icon>Manage Customers</button></span>
+        <span><button mat-raised-button color="primary" (click)="this.router.navigate(['/admin/chat'])"><mat-icon>help</mat-icon>Help</button></span> 
+        <span><button mat-raised-button color="primary" (click)="this.router.navigate(['/login', {logout: '1'}])"><mat-icon>exit_to_app</mat-icon>Log Out</button></span>
+    </div>
+</mat-toolbar>   
+
+<div style="margin-top: 2rem; margin-left: 2rem; margin-right: 2rem;">
+    <table style="width: 90%;">
+        <tr class="header">
+            <td>
+                <div style="margin:auto;">
+                    <input type="text" maxlength="20" size="20" placeholder="Username"
+                     [(ngModel)]="this.usernameFilter"
+                     (change)="this.changePage()"
+                     [disabled]="this.pageLoading || this.updateInProgress">
+                </div>
+            </td>
+            <td style="width: 25%">Name</td>
+            <td>
+                <div style="margin:auto;">
+                    <input type="text" maxlength="30" size="30" placeholder="Email"
+                     [(ngModel)]="this.emailFilter"
+                     (change)="this.changePage()"
+                     [disabled]="this.pageLoading || this.updateInProgress"> 
+                </div>
+            </td>
+            <td style="text-align: center;">  
+                Items per page: 
+                <select 
+                 [(ngModel)]="this.pageSize"
+                 (change)="changePage()"
+                 [disabled]="this.pageLoading || this.updateInProgress">
+
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr *ngIf="this.pageLoading;else elseBlock">
+            <td colspan="4">
+                <mat-spinner style="margin: auto; width: 25%; margin-top: 2rem; margin-bottom: 2rem;"></mat-spinner>
+            </td> 
+        </tr>
+
+        <ng-template #elseBlock>
+
+            <tr *ngIf="this.customerList.length == 0"> 
+                <td colspan="4">
+                    No records found
+                </td>
+            </tr>
+
+            <ng-container *ngFor="let customer of this.customerList;index as i"> 
+
+                <ng-template [ngIf]="!this.updateFlags[i]">
+                    <tr>
+                        <td>
+                            {{customer.username}}
+                        </td>
+                        <td>
+                            {{customer.name}} 
+                        </td>
+                        <td>
+                            {{customer.email}}
+                        </td>
+                        <td style="text-align: center;">
+                            <button mat-raised-button color="primary" 
+                            [disabled]="this.updateInProgress"
+                            (click)="initUpdate(i)">
+                                <mat-icon>edit</mat-icon>Edit
+                            </button>
+                        </td>
+                    </tr>
+                </ng-template>
+
+                <ng-template [ngIf]="this.updateFlags[i]">
+                    <tr>
+                        <td> 
+                            {{customer.username}}
+                        </td>
+                        <td>
+                            <input type="text" maxlength="30" size="30"
+                            [(ngModel)]="this.updatedName"
+                            [class.is-invalid]="this.nameError!=''"
+                            (change)="validateName()"> 
+                        </td>
+                        <td> 
+                            <input type="text" maxlength="30" size="30"
+                            [(ngModel)]="this.updatedEmail"
+                            [class.is-invalid]="this.emailError!=''"
+                            (change)="validateEmail()"> 
+                        </td>
+                        <td style="text-align: center;"> 
+                            <button mat-raised-button color="primary" class="row-button"
+                            [style.display]="this.updateFlags[i]?'':'none'"
+                            (click)="processUpdate(i)">
+                                Save
+                            </button>
+                            <button mat-raised-button color="primary"  class="row-button"
+                            [style.display]="this.updateFlags[i]?'':'none'"
+                            (click)="cancelUpdate(i)">
+                                Cancel
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="this.nameError != '' || this.emailError != ''">
+                        <td></td>
+                        <td style="color:red;">
+                            {{this.nameError}} 
+                       </td>
+                        <td style="color:red;">
+                             {{this.emailError}} 
+                        </td>
+                        <td></td>
+                    </tr>
+                </ng-template>  
+            </ng-container>
+            <tr *ngIf="this.totalPages.length>=1">
+                <td colspan="4" style="text-align: center; padding: 1rem;">
+                    <div class="pagination"> 
+                        <a 
+                         *ngIf="this.currentPage>1"
+                         (click)="this.updateInProgress?null:this.changePage(this.currentPage-1)">&laquo;</a>
+    
+                        <a 
+                         *ngFor="let p of this.totalPages"
+                         [class.active]="p==this.currentPage"
+                         (click)="(p==this.currentPage || this.updateInProgress)?null:this.changePage(p)">  
+                            {{p}}
+                        </a>
+                        
+                        <a 
+                         *ngIf="this.currentPage<this.totalPages.length"
+                         (click)="this.updateInProgress?null:this.changePage(this.currentPage+1)">&raquo;</a>  
+                    </div>  
+                </td>  
+            </tr>
+        </ng-template>  
+    </table>
+</div> 

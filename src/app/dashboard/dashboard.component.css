@@ -1,0 +1,20 @@
+span {
+    padding-right: 1rem;
+    padding-left: 0px;
+}
+
+table, th, td {
+    border: 1px solid white;
+    border-collapse: collapse; 
+}
+
+td {
+    padding: 0.7rem;
+    background-color: #99ddff;
+}
+  
+.header td {
+    padding: 0.7rem;
+    background-color: gray;
+    color: white; 
+}

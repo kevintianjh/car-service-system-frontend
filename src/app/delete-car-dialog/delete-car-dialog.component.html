@@ -1,0 +1,38 @@
+<table>
+    <tr>
+        <td></td>
+        <td><h2>Delete Vehicle</h2></td>
+    </tr>
+    <tr>
+        <td>ID</td>
+        <td>{{carId}}</td>
+    </tr> 
+    <tr>
+        <td>Registration</td>
+        <td>{{registration}}</td>
+    </tr>
+    <tr>
+        <td>Model</td>
+        <td>{{model}}</td>
+    </tr>
+    <tr>
+        <td>Type</td>  
+        <td>{{type}}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td style="width:70%;"> 
+            <span *ngIf="this.data.selectedCar.serviceStatus == '1'">
+                <button mat-raised-button color="primary" [style.display]="displayBtns" (click)="delete()"><mat-icon>delete</mat-icon>Delete</button> 
+            </span>
+            <button mat-raised-button color="primary" [style.display]="displayBtns" (click)="cancel()"><mat-icon>cancel</mat-icon>Cancel</button> 
+            <mat-spinner style="width: 1rem; height: 1rem;" [style.display]="displaySpinner"></mat-spinner>
+        </td> 
+    </tr> 
+    <tr *ngIf="this.data.selectedCar.serviceStatus != '1'">
+        <td></td>
+        <td>
+            Note: Cannot delete car when there is a service request
+        </td>
+    </tr>
+</table> 

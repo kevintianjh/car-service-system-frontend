@@ -1,0 +1,55 @@
+<table>
+    <tr>
+        <td></td>
+        <td>
+            <h2>Service Request</h2>
+        </td>
+    </tr>
+    <tr>
+        <td>ID</td>
+        <td>{{carId}}</td>
+    </tr> 
+    <tr>
+        <td>Registration</td>
+        <td>{{registration}}</td>
+    </tr>
+    <tr>
+        <td>Service Status</td> 
+        <td>{{serviceStatus}}</td> 
+    </tr>
+    <tr> 
+        <td>Service Request</td>
+        <td>
+            <div *ngIf="this.data.selectedCar.serviceStatus=='1' && !this.isLoading; else elseBlock" >   
+                <textarea [disabled]="this.isLoading" maxlength="100" name="serviceRequest" [(ngModel)]="serviceRequest" style="width: 95%; height: 5rem; resize: none;"></textarea>
+            </div> 
+
+            <ng-template #elseBlock>
+                {{serviceRequest}}
+            </ng-template>
+        </td>
+    </tr> 
+    <tr>
+        <td></td>
+        <td style="width:70%;">   
+            <span *ngIf="this.data.selectedCar.serviceStatus=='1'">
+                <button mat-raised-button color="primary" [style.display]="this.isLoading?'none':'inline'" (click)="requestService()"><mat-icon>warning</mat-icon>Request Service</button> 
+            </span> 
+            <span *ngIf="this.data.selectedCar.serviceStatus=='4'">
+                <button mat-raised-button color="primary" [style.display]="this.isLoading?'none':'inline'" (click)="acknowledge()"><mat-icon>thumb_up</mat-icon>Acknowledge</button> 
+            </span>
+            <button mat-raised-button color="primary" [style.display]="this.isLoading?'none':'inline'" (click)="close()"><mat-icon>cancel</mat-icon>Close</button> 
+            <mat-spinner style="width: 1rem; height: 1rem;" [style.display]="this.isLoading?'block':'none'"></mat-spinner>
+        </td> 
+    </tr>
+    <tr *ngIf="errors.length != 0">
+        <td></td>
+        <td style="background-color: lightcoral;">
+            <ul>
+                <li *ngFor="let error of errors"> 
+                    {{error}}
+                </li>
+            </ul>
+        </td>
+    </tr>
+</table> 

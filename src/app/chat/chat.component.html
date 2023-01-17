@@ -1,0 +1,86 @@
+<mat-toolbar color="primary" class="navbar">
+    <div style="padding-left: 1rem; display: flex; padding-bottom: 0px; margin-bottom: 0px;">
+        <span><h1>WOW Car Service</h1></span>
+        <span><button mat-raised-button color="primary" (click)="this.router.navigate(['/dashboard'])"><mat-icon>home</mat-icon>Home</button></span> 
+        <span><button mat-raised-button color="primary" onclick="window.alert('Feature coming soon!')"><mat-icon>account_box</mat-icon>Your Profile</button></span>
+        <span><button mat-raised-button color="primary" disabled><mat-icon>help</mat-icon>Help</button></span>
+        <span><button mat-raised-button color="primary" (click)="this.router.navigate(['/login', {logout: '1'}])"><mat-icon>exit_to_app</mat-icon>Log Out</button></span>
+    </div>
+</mat-toolbar>  
+<div style="margin-top: 1rem; padding-left: 2rem; height: 100%;"
+ (dragover)="dragOver($event)" 
+ (dragleave)="dragLeave($event)"
+ (drop)="drop($event)">
+
+    <div style="height: fit-content; width: 50%; margin-bottom: 5px;"
+     *ngIf="this.is_dragging">
+
+        <mat-card style="background-color: lightblue;">
+            <mat-card-content style="text-align: center;">
+                <div style="margin: auto; width: fit-content;">
+                    <div style="float:left;"><mat-icon>info</mat-icon></div>
+                    <div style="float:left; margin-left: 5px; margin-top: 3px;">Drop file to upload and share</div>
+                </div> 
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+    
+    <div style="height: 80%; width: 50%;">
+        <div class="chat_table_div">
+            <table class="chat_table">
+                <tr *ngIf="this.chat_logs.length==0"> 
+                    <td><h3>Looking for an admin to help you, please wait...</h3></td>
+                </tr>
+                <ng-container *ngFor="let log of this.chat_logs;index as i">
+                    <tr *ngIf="i==0">
+                        <td>You are chatting with '{{log.from}}'</td>
+                    </tr>
+                    <tr *ngIf="log.message!=''"> 
+                        <td>{{log.from}}: {{log.message}}</td>
+                    </tr>
+                    <tr *ngIf="log.file!=''">
+                        <td>
+                            '{{log.from}}' shared a file: 
+                            <a target="_blank" href="http://localhost:8080/chat-uploads/{{log.file}}">http://localhost:8080/chat-uploads/{{log.file}}</a>
+                        </td>
+                    </tr>
+                </ng-container>
+            </table>
+        </div>
+        <div class="chat_status_div">
+            <table class="chat_table">
+                <tr><td>
+                    <span *ngIf="this.admin_typing">
+                        {{this.admin_username}} is typing...
+                    </span>
+                    <br>
+                    (Drag and drop file to this window to share)
+                </td></tr>
+            </table>
+        </div>
+        <div class="chat_reply_div">  
+            <div style="height: 100%; width: 100%; position:absolute; top:0px; left:0px; z-index: 1;">
+                <table style="width: 100%; height: 100%;">
+                    <tr>
+                        <td>
+                            <div style="margin: auto; height: 100%;">
+                                <textarea style="width: 95%; height: 95%; resize: none; float: left;"
+                                [(ngModel)]="chat_box_text"
+                                (change)="typing()"
+                                ></textarea> 
+                            </div> 
+                        </td>
+                        <td>
+                            <div style="margin:auto; width: 100%; height:100%;">
+                                <button mat-raised-button style="width: 100%; height: 100%;" color="primary"
+                                [disabled]="admin_username=='' || chat_box_text.trim()==''"
+                                (click)="sendChat()">Send</button>
+                            </div> 
+                        </td>
+                    </tr>
+                </table> 
+            </div>
+        </div>
+    </div>  
+</div>

@@ -1,0 +1,48 @@
+<mat-toolbar color="primary" class="navbar">
+    <div style="padding-left: 1rem; display: flex; padding-bottom: 0px; margin-bottom: 0px;">
+        <span><h1>WOW Car Service</h1></span>
+        <span><button mat-raised-button color="primary" disabled><mat-icon>home</mat-icon>Home</button></span> 
+        <span><button mat-raised-button color="primary" onclick="window.alert('Feature coming soon!')"><mat-icon>account_box</mat-icon>Your Profile</button></span>
+        <span><button mat-raised-button color="primary" (click)="this.router.navigate(['/chat'])"><mat-icon>help</mat-icon>Help</button></span>
+        <span><button mat-raised-button color="primary" (click)="this.router.navigate(['/login', {logout: '1'}])"><mat-icon>exit_to_app</mat-icon>Log Out</button></span>
+    </div>
+</mat-toolbar> 
+  <div style="margin-top: 1rem; padding-left: 2rem;">
+     
+    <div style="width: 75%;" *ngIf="displayTable; else block">
+      <span class="mat-headline-4">Welcome {{customerName}}!</span>
+      <br><br>
+   
+      <table style="width: 100%;"> 
+        <tr class="header"> 
+          <td>ID: </td>
+          <td>Registration: </td> 
+          <td>Model: </td> 
+          <td>Type: </td> 
+          <td>Actions</td>
+        </tr>
+        <tr *ngFor="let car of carList" style="line-height: 3rem;">
+          <td>{{car.id}}</td>
+          <td>{{car.registration}}</td>  
+          <td>{{car.model}}</td> 
+          <td>{{car.type}}</td>
+          <td>
+              <button mat-raised-button color="primary" (click)="update(car.id)" style="margin-right: 0.5rem;"><mat-icon>edit</mat-icon>Edit</button>
+              <button mat-raised-button color="primary" (click)="delete(car.id)" style="margin-right: 0.5rem;"><mat-icon>delete</mat-icon>Delete</button>
+              <button mat-raised-button color="primary" (click)="manageService(car.id)" [matBadge]="(car.serviceStatus=='1') ? '':'!'" matBadgeColor="warn"><mat-icon>build</mat-icon>Service</button>
+          </td> 
+        </tr>  
+        <tr style="line-height: 3rem;">
+          <td colspan="4"></td>
+          <td><button mat-raised-button color="primary" (click)="add()"><mat-icon>add</mat-icon>Add New Car</button></td>
+        </tr>
+      </table>  
+    </div>
+    <ng-template #block>
+      <div style="width: 70%; margin-top: 8rem;"> <mat-spinner style="margin: auto;"></mat-spinner> </div> 
+    </ng-template> 
+    
+  </div> 
+  
+  <router-outlet></router-outlet>
+  
